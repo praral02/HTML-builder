@@ -1,54 +1,21 @@
-let res = '';
-
-const path = require('path');
+const path = require('node:path');
 const fs = require('fs');
-const readline = require('readline');
-const {
-  stdin: input,
-  stdout: output,
-}  = process;
-const rl = readline.createInterface({input, output});
+const process = require('node:process');
+const pathToFile = path.join(__dirname, 'invite.txt');
 
+const pToFile = fs.createWriteStream(pathToFile);
 
-fs.access('invite.txt', function(error){
-  if (error) {
-    fs.readFile(
-      path.join(__dirname, 'invite.txt'),
-      'utf-8',
-      (err, data) => {
-        if (err){
-          rl.question('Hello, write your invitation ', (text) => {
-            res += text;
-              
-            fs.writeFile(
-              path.join(__dirname, 'invite.txt'),
-              `${res}`, 
-              (error) => {
-                if(error){throw error;}
-                console.log('файл создвн');
-              }
-            );
-                
-              
-          });
-        }else{        
-          res = data;
-        }
-      });
+process.stdout.write('Введите текст \n');
+process.stdin.on('data', (data) => {
+  if (data.toString() === 'exit') {
+    process.stdout.write('Вы вышли, использован exit');
+    pToFile.end();
+    process.exit();
+  } else {
+    pToFile.write(data);
   }
 });
-rl.question('Hello, write your invitation ', (text) => {
-  res += text;
-    
-  fs.writeFile(
-    path.join(__dirname, 'invite.txt'),
-    `${res}`, 
-    (error, data) => {
-      if(error){throw error;}
-      res += data;
-      console.log('файл создан');
-    }
-  );
+process.on('SIGINT', () => {
+  process.stdout.write('Вы вышли из процесса с помощью комбинации Ctrl+C'); 
+  process.exit();
 });
-process.on('exit', () => console.log('Goodbye'));
-
