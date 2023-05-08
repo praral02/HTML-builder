@@ -13,17 +13,5 @@ fs.readdir(filePath,(err,data) => {
 });
 
 
-// fs.readdir('03-files-in-folder/secret-folder/image.jpg',(err,data) => {
-//   if(err) {throw err;}
-//   data.forEach(file => {
-//     console.log(file + '  ' + path.extname(file) + '  ' + fs.statSync(`03-files-in-folder/secret-folder/image.jpg/${file}`).size / 1000);
-//   });
-// });
-// fs.readdir('03-files-in-folder/secret-folder',(err,data) => {
-//   if(err) {throw err;}
-  
-//   data.forEach(file => {
-//     console.log(file + '  ' + path.extname(file) + '  ' + fs.statSync(`03-files-in-folder/secret-folder/${file}`).size/1000 + 'kb');
-//   });
-// });
+
 
